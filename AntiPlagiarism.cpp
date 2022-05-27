@@ -3,7 +3,7 @@
 
 using namespace std;
 
-const int SHINGLE_SIZE = 3;
+const int SHINGLE_SIZE = 1;
 
 double antiPlagiarism(string text, string fragment);
 bool isSeparator(char c);
@@ -14,11 +14,12 @@ string canonizeText(string text);
 string cutTheWord(string text, int position);
 int howMuchSeparatorsBeforeWord(string text, int position);
 bool isForbiddenWord(string text);
+string wordToLowerCase(string text);
 
 int main()
 {
-	string text = "I am going to the shop to buy some orange";
-	string fragment = "I am going to the shop to buy some apples";
+	string text = "I really like vaping on my way to university. And if it's an important event, I'll definitely have a cup of coffee.";
+	string fragment = "I really like vaping on my way to university. And if it's an important event, I'll definitely have a cup of tea.";
 	
 	cout << "Amount of plagiat: " << antiPlagiarism(text, fragment) * 100 << "%" << endl;	
 	
@@ -81,13 +82,19 @@ string canonizeText(string text)
 {	
 	string canonizedText = "";
 	string space = " ";
-	char zero = 0;
+	string word = "";
 	
 	for (int i = 0; text[i] != 0; i++) {
 		if (!isSeparator(text[i])) {
-			canonizedText += text[i];
+			word += text[i];
 			if (isSeparator(text[i + 1])) {
-				canonizedText += space;
+				if (!isForbiddenWord(word))
+					canonizedText = canonizedText + wordToLowerCase(word) + space;
+					word = "";
+			}
+			if (text[i + 1] == 0) {
+				if (!isForbiddenWord(word))
+					canonizedText = canonizedText + wordToLowerCase(word);
 			}
 		}
 	}
@@ -98,7 +105,7 @@ string canonizeText(string text)
 
 bool isSeparator(char c)
 {
-	char separators[] = "~`!@#$%^&*-_=+,./({[<>]})?\n ";
+	char separators[] = "~`!@#$%^&*-_=+,./({[<>]})?\n0123456789 ";
 	
 	for (int i = 0; separators[i] != 0; i++)
 		if (separators[i] == c)
@@ -138,6 +145,28 @@ string cutTheWord(string text, int position)
 		position++;	
 	}
 	return word;
+}
+
+bool isForbiddenWord(string text)
+{	
+	const int N = 12;
+	string forbiddenWords[N] = {"the", "with", "under", "and", "for", "from", "between", "into", "out", "over", "that", "among"};
+	for (int i = 0; i < N; i++)
+		if (text == forbiddenWords[i])
+			return true;
+	if (getStringLength(text) < 3)
+		return true;
+	return false;
+}
+
+string wordToLowerCase(string text)
+{
+	for (int i = 0; i < getStringLength(text); i++) {
+		if (text[i] >= 65 and text[i] <= 90) {
+			text[i] = text[i] + 32;
+		}
+	}
+	return text;
 }
 
 
