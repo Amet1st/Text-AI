@@ -16,7 +16,7 @@ int howMuchSeparatorsBeforeWord(string text, int position);
 
 int main()
 {
-	string text = "I am going to the shop to buy some apples";
+	string text = "I am going to the shop to buy some orange";
 	string fragment = "I am going to the shop to buy some apples";
 	
 	cout << "Amount of plagiat: " << antiPlagiarism(text, fragment) * 100 << "%" << endl;	
@@ -46,18 +46,12 @@ double antiPlagiarism(string text, string fragment)
 	
 	for (int i = 0; i < textSize; i++) {
 		wordsOfText[i] = cutTheWord(text, position);
-		if (i != textSize - 2)
-			position += getStringLength(wordsOfText[i]) + 1;
-		else 
-			position += getStringLength(wordsOfText[i]);
+		position += getStringLength(wordsOfText[i]) + 1;
 	}
 	position = 0;
 	for (int i = 0; i < fragmentSize; i++) {
 		wordsOfFragment[i] = cutTheWord(fragment, position);
-		if (i != textSize - 2)
-			position += getStringLength(wordsOfFragment[i]) + 1;
-		else 
-			position += getStringLength(wordsOfFragment[i]);
+		position += getStringLength(wordsOfFragment[i]) + 1;
 	}
 	
 	if (textSize > fragmentSize) {
@@ -138,7 +132,7 @@ int howMuchWords(string text)
 string cutTheWord(string text, int position)
 {	
 	string word = "";
-	while (text[position] != 32) {
+	while (text[position] != 32 and text[position] != 0) {
 		word += text[position];
 		position++;	
 	}
