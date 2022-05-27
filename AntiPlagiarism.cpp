@@ -7,12 +7,10 @@ const int SHINGLE_SIZE = 3;
 
 double antiPlagiarism(string text, string fragment);
 bool isSeparator(char c);
-void printArrayOfStrings(string text[], int size);
 int getStringLength(string text);
 int howMuchWords(string text);
 string canonizeText(string text);
 string cutTheWord(string text, int position);
-int howMuchSeparatorsBeforeWord(string text, int position);
 bool isForbiddenWord(string text);
 string wordToLowerCase(string text);
 
@@ -152,9 +150,10 @@ bool isForbiddenWord(string text)
 {	
 	const int N = 12;
 	string forbiddenWords[N] = {"the", "with", "under", "and", "for", "from", "between", "into", "out", "over", "that", "among"};
-	for (int i = 0; i < N; i++)
+	for (int i = 0; i < N; i++) {
 		if (text == forbiddenWords[i])
 			return true;
+	}
 	if (getStringLength(text) < 3)
 		return true;
 	return false;
