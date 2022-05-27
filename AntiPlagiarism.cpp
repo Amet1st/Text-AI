@@ -15,7 +15,6 @@ string cutTheWord(string text, int position);
 int howMuchSeparatorsBeforeWord(string text, int position);
 bool isForbiddenWord(string text);
 
-
 int main()
 {
 	string text = "I am going to the shop to buy some orange";
