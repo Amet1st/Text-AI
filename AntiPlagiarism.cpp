@@ -3,7 +3,7 @@
 
 using namespace std;
 
-const int SHINGLE_SIZE = 1;
+const int SHINGLE_SIZE = 3;
 
 double antiPlagiarism(string text, string fragment);
 bool isSeparator(char c);
@@ -19,8 +19,9 @@ string wordToLowerCase(string text);
 int main()
 {
 	string text = "I really like vaping on my way to university. And if it's an important event, I'll definitely have a cup of coffee.";
-	string fragment = "I really like vaping on my way to university. And if it's an important event, I'll definitely have a cup of tea.";
+	string fragment = "I really like thinking on my way to university. And if it's an ordinary event, I'll definitely have a cup of tea.";
 	
+	cout.precision(4);
 	cout << "Amount of plagiat: " << antiPlagiarism(text, fragment) * 100 << "%" << endl;	
 	
 	return 0;
@@ -88,12 +89,12 @@ string canonizeText(string text)
 		if (!isSeparator(text[i])) {
 			word += text[i];
 			if (isSeparator(text[i + 1])) {
-				if (!isForbiddenWord(word))
+				if (!isForbiddenWord(wordToLowerCase(word)))
 					canonizedText = canonizedText + wordToLowerCase(word) + space;
 					word = "";
 			}
 			if (text[i + 1] == 0) {
-				if (!isForbiddenWord(word))
+				if (!isForbiddenWord(wordToLowerCase(word)))
 					canonizedText = canonizedText + wordToLowerCase(word);
 			}
 		}
