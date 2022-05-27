@@ -13,6 +13,7 @@ int howMuchWords(string text);
 string canonizeText(string text);
 string cutTheWord(string text, int position);
 int howMuchSeparatorsBeforeWord(string text, int position);
+bool isForbiddenWord(string text);
 
 int main()
 {
