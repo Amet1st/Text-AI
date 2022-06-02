@@ -4,11 +4,12 @@
 using namespace std;
 
 const int SHINGLE_SIZE = 3;
+const int SPACE_ASCII = 32;
 
 double antiPlagiarism(string text, string fragment);
 bool isSeparator(char c);
 int getStringLength(string text);
-int howMuchWords(string text);
+int getAmoutOfWords(string text);
 string canonizeText(string text);
 string cutTheWord(string text, int position);
 bool isForbiddenWord(string text);
@@ -25,8 +26,7 @@ int main()
 	return 0;
 }
 
-double antiPlagiarism(string text, string fragment)
-{
+double antiPlagiarism(string text, string fragment) {
 	int wordMatch = 0;
 	int shingleMatch = 0;
 	int numberOfShingles = 0;
@@ -35,8 +35,8 @@ double antiPlagiarism(string text, string fragment)
 	text = canonizeText(text);
 	fragment = canonizeText(fragment);
 	
-	int textSize = howMuchWords(text);
-	int fragmentSize = howMuchWords(fragment);
+	int textSize = getAmoutOfWords(text);
+	int fragmentSize = getAmoutOfWords(fragment);
 		
 	if (fragmentSize == 0 or textSize == 0) {
 			return 0.0;
@@ -62,6 +62,10 @@ double antiPlagiarism(string text, string fragment)
 		numberOfShingles = textSize - SHINGLE_SIZE + 1;
 	}
 	
+	if (SHINGLE_SIZE > numberOfShingles) {
+		return 0.0;
+	}
+	
 	for (int i = 0; i < numberOfShingles; i++) {
 		for (int j = 0; j < SHINGLE_SIZE; j++) {
 			if (wordsOfText[i + j] == wordsOfFragment[i + j]) {
@@ -77,8 +81,7 @@ double antiPlagiarism(string text, string fragment)
 	return 1.0 * shingleMatch / numberOfShingles; 
 }
 
-string canonizeText(string text)
-{	
+string canonizeText(string text) {	
 	string canonizedText = "";
 	string space = " ";
 	string word = "";
@@ -87,13 +90,15 @@ string canonizeText(string text)
 		if (!isSeparator(text[i])) {
 			word += text[i];
 			if (isSeparator(text[i + 1])) {
-				if (!isForbiddenWord(wordToLowerCase(word)))
+				if (!isForbiddenWord(wordToLowerCase(word))) {
 					canonizedText = canonizedText + wordToLowerCase(word) + space;
-					word = "";
+					word = "";	
+				}
 			}
 			if (text[i + 1] == 0) {
-				if (!isForbiddenWord(wordToLowerCase(word)))
+				if (!isForbiddenWord(wordToLowerCase(word))) {
 					canonizedText = canonizedText + wordToLowerCase(word);
+				}	
 			}
 		}
 	}
@@ -102,9 +107,8 @@ string canonizeText(string text)
 }
 
 
-bool isSeparator(char c)
-{
-	char separators[] = "~`!@#$%^&*-_=+,./({[<>]})?\n0123456789 ";
+bool isSeparator(char c) {
+	char separators[] = "~`!@#$%^&*-_=+,.:/({[<>]})?\n0123456789 ";
 	
 	for (int i = 0; separators[i] != 0; i++)
 		if (separators[i] == c)
@@ -112,61 +116,58 @@ bool isSeparator(char c)
 	return false;
 }
 
-void printArrayOfStrings(string text[], int size)
-{
+void printArrayOfStrings(string text[], int size) {
 	for (int i = 0; i < size; i++) 
 		cout << text[i] << endl;	
 }
 
-int getStringLength(string text)
-{
+int getStringLength(string text) {
 	int i = 0;
-	while (text[i] != 0)
+	while (text[i] != 0) {
 		i++;
+	}
+		
 	return i;
 }
 
-int howMuchWords(string text)
-{
+int getAmoutOfWords(string text) {
 	int counter = 0;
-	if (text[0] == 0)
+	if (text[0] == 0) {
 		return 0;
-	for (int i = 0; text[i] != 0; i++)
-		if (text[i] == 32 and text[i + 1] != 32) counter++;
+	}
+	for (int i = 0; text[i] != 0; i++) {
+		if (text[i] == SPACE_ASCII and text[i + 1] != SPACE_ASCII) counter++;
+	}
 	return counter + 1; 
 }
 
-string cutTheWord(string text, int position)
-{	
+string cutTheWord(string text, int position) {	
 	string word = "";
-	while (text[position] != 32 and text[position] != 0) {
+	while (text[position] != SPACE_ASCII and text[position] != 0) {
 		word += text[position];
 		position++;	
 	}
 	return word;
 }
 
-bool isForbiddenWord(string text)
-{	
+bool isForbiddenWord(string text) {	
 	const int N = 12;
 	string forbiddenWords[N] = {"the", "with", "under", "and", "for", "from", "between", "into", "out", "over", "that", "among"};
 	for (int i = 0; i < N; i++) {
 		if (text == forbiddenWords[i])
 			return true;
 	}
-	if (getStringLength(text) < 3)
+	if (getStringLength(text) < 3) {
 		return true;
+	}
 	return false;
 }
 
-string wordToLowerCase(string text)
-{
+string wordToLowerCase(string text) {
 	for (int i = 0; i < getStringLength(text); i++) {
 		if (text[i] >= 65 and text[i] <= 90) {
-			text[i] = text[i] + 32;
+			text[i] = text[i] + SPACE_ASCII;
 		}
 	}
 	return text;
 }
-
-
