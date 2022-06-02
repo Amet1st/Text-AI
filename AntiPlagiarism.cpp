@@ -5,6 +5,9 @@ using namespace std;
 
 const int SHINGLE_SIZE = 3;
 const int SPACE_ASCII = 32;
+const int A_ASCII = 65;
+const int Z_ASCII = 90;
+const string EMPTY_STRING = "";
 
 double antiPlagiarism(string text, string fragment);
 bool isSeparator(char c);
@@ -15,8 +18,7 @@ string cutTheWord(string text, int position);
 bool isForbiddenWord(string text);
 string wordToLowerCase(string text);
 
-int main()
-{
+int main() {
 	string text = "I really like vaping on my way to university. And if it's an important event, I'll definitely have a cup of coffee.";
 	string fragment = "I really like thinking on my way to university. And if it's an ordinary event, I'll definitely have a cup of tea.";
 	
@@ -82,9 +84,9 @@ double antiPlagiarism(string text, string fragment) {
 }
 
 string canonizeText(string text) {	
-	string canonizedText = "";
+	string canonizedText = EMPTY_STRING;
 	string space = " ";
-	string word = "";
+	string word = EMPTY_STRING;
 	
 	for (int i = 0; text[i] != 0; i++) {
 		if (!isSeparator(text[i])) {
@@ -92,7 +94,7 @@ string canonizeText(string text) {
 			if (isSeparator(text[i + 1])) {
 				if (!isForbiddenWord(wordToLowerCase(word))) {
 					canonizedText = canonizedText + wordToLowerCase(word) + space;
-					word = "";	
+					word = EMPTY_STRING;	
 				}
 			}
 			if (text[i + 1] == 0) {
@@ -142,7 +144,7 @@ int getAmoutOfWords(string text) {
 }
 
 string cutTheWord(string text, int position) {	
-	string word = "";
+	string word = EMPTY_STRING;
 	while (text[position] != SPACE_ASCII and text[position] != 0) {
 		word += text[position];
 		position++;	
@@ -165,7 +167,7 @@ bool isForbiddenWord(string text) {
 
 string wordToLowerCase(string text) {
 	for (int i = 0; i < getStringLength(text); i++) {
-		if (text[i] >= 65 and text[i] <= 90) {
+		if (text[i] >= A_ASCII and text[i] <= Z_ASCII) {
 			text[i] = text[i] + SPACE_ASCII;
 		}
 	}
