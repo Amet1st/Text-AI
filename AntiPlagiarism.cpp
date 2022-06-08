@@ -8,6 +8,7 @@ const int SPACE_ASCII = 32;
 const int A_ASCII = 65;
 const int Z_ASCII = 90;
 const string EMPTY_STRING = "";
+const string SPACE_STRING = " ";
 
 double antiPlagiarism(string text, string fragment);
 bool isSeparator(char c);
