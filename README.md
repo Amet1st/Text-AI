@@ -1,3 +1,14 @@
 # Text-AI
 Anti-plagiarism project
-https://amet1st.github.io/Text-AI/
+
+<a href="https://amet1st.github.io/Text-AI/">Live Demo</a>
+
+Tech Stack:
+
+<ul>
+<li>HTML</li>
+<li>CSS</li>
+<li>JavaScript</li>
+<li>C++</li>
+<li>Docker</li>
+</ul>
